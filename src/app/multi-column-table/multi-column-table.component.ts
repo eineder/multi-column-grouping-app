@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Customer } from '../domain/customer';
 import { CustomerService } from '../customerservice';
 import { TableModule } from 'primeng/table';
 import { HttpClientModule } from '@angular/common/http';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { TagModule } from 'primeng/tag';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-multi-column-table',
@@ -17,6 +17,9 @@ import { TagModule } from 'primeng/tag';
     ButtonModule,
     RippleModule,
     TagModule,
+    NgFor,
+    NgIf,
+    NgClass,
   ],
   providers: [CustomerService],
   styles: [
@@ -31,57 +34,87 @@ import { TagModule } from 'primeng/tag';
         }
 
         .p-row-toggler {
-          vertical-align: middle;
-          margin-right: 0.25rem;
+          margin-right: 0.5rem;
         }
       }
     `,
   ],
 })
 export class MultiColumnTableComponent implements OnInit {
-  customers!: Customer[];
+  customers: any[] = [];
+  expandedRepresentatives: { [key: string]: boolean } = {};
+  expandedCountries: { [key: string]: boolean } = {};
 
   constructor(private customerService: CustomerService) {}
 
-  ngOnInit() {
-    this.customerService.getCustomersMedium().then((data) => {
-      this.customers = data;
-    });
+  ngOnInit(): void {
+    this.customers = [
+      {
+        representative: { name: 'John', image: 'john.png' },
+        countries: [
+          {
+            country: 'USA',
+            customers: [
+              {
+                name: 'Customer 1',
+                company: 'Company A',
+                status: 'Active',
+                date: '2021-01-01',
+              },
+              {
+                name: 'Customer 2',
+                company: 'Company B',
+                status: 'Inactive',
+                date: '2021-02-01',
+              },
+            ],
+          },
+          {
+            country: 'Canada',
+            customers: [
+              {
+                name: 'Customer 3',
+                company: 'Company C',
+                status: 'Active',
+                date: '2021-03-01',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        representative: { name: 'Jane', image: 'jane.png' },
+        countries: [
+          {
+            country: 'UK',
+            customers: [
+              {
+                name: 'Customer 4',
+                company: 'Company D',
+                status: 'Active',
+                date: '2021-04-01',
+              },
+            ],
+          },
+        ],
+      },
+      // More representatives...
+    ];
+  }
+  toggleRepresentative(representativeName: string) {
+    this.expandedRepresentatives[representativeName] =
+      !this.expandedRepresentatives[representativeName];
   }
 
-  calculateCustomerTotal(name: string) {
-    let total = 0;
-
-    if (this.customers) {
-      for (let customer of this.customers) {
-        if (customer.representative?.name === name) {
-          total++;
-        }
-      }
-    }
-
-    return total;
+  toggleCountry(countryName: string) {
+    this.expandedCountries[countryName] = !this.expandedCountries[countryName];
   }
 
-  getSeverity(status: string) {
-    switch (status) {
-      case 'unqualified':
-        return 'danger';
+  isRepresentativeExpanded(representativeName: string): boolean {
+    return this.expandedRepresentatives[representativeName] || false;
+  }
 
-      case 'qualified':
-        return 'success';
-
-      case 'new':
-        return 'info';
-
-      case 'negotiation':
-        return 'warning';
-
-      case 'renewal':
-        return undefined;
-
-      default:
-        return undefined;
-    }
+  isCountryExpanded(countryName: string): boolean {
+    return this.expandedCountries[countryName] || false;
   }
 }

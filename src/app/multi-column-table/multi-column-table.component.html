@@ -1,13 +1,5 @@
 <div class="card">
-  <p-table
-    [value]="customers"
-    sortField="representative.name"
-    sortMode="single"
-    dataKey="representative.name"
-    rowGroupMode="subheader"
-    groupRowsBy="representative.name"
-    [tableStyle]="{ 'min-width': '70rem' }"
-  >
+  <p-table [value]="customers" [tableStyle]="{ 'min-width': '70rem' }">
     <ng-template pTemplate="header">
       <tr>
         <th style="width: 20%">Name</th>
@@ -17,62 +9,66 @@
         <th style="width: 20%">Date</th>
       </tr>
     </ng-template>
-    <ng-template
-      pTemplate="groupheader"
-      let-customer
-      let-rowIndex="rowIndex"
-      let-expanded="expanded"
-    >
-      <tr>
+    <ng-template pTemplate="body" let-representative>
+      <tr (click)="toggleRepresentative(representative.representative.name)">
         <td colspan="5">
           <button
             type="button"
             pButton
             pRipple
-            [pRowToggler]="customer"
             class="p-button-text p-button-rounded p-button-plain mr-2"
-            [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+            [icon]="
+              isRepresentativeExpanded(representative.representative.name)
+                ? 'pi pi-chevron-down'
+                : 'pi pi-chevron-right'
+            "
           ></button>
           <img
-            [alt]="customer.representative.name"
+            [alt]="representative.representative.name"
             src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{
-              customer.representative.image
+              representative.representative.image
             }}"
             width="32"
             style="vertical-align: middle"
           />
-          <span class="font-bold ml-2">{{ customer.representative.name }}</span>
-        </td>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="rowexpansion" let-customer>
-      <tr>
-        <td>
-          {{ customer.name }}
-        </td>
-        <td>
-          <img
-            src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
-            [class]="'flag flag-' + customer.country.code"
-            style="width: 20px"
-          />
-          <span class="ml-1 vertical-align-middle">{{
-            customer.country.name
+          <span class="font-bold ml-2">{{
+            representative.representative.name
           }}</span>
         </td>
-        <td>
-          {{ customer.company }}
-        </td>
-        <td>
-          <p-tag
-            [value]="customer.status"
-            [severity]="getSeverity(customer.status)"
-          />
-        </td>
-        <td>
-          {{ customer.date }}
-        </td>
       </tr>
+      <ng-container
+        *ngIf="isRepresentativeExpanded(representative.representative.name)"
+      >
+        <ng-container *ngFor="let country of representative.countries">
+          <tr (click)="toggleCountry(country.country)">
+            <td colspan="5" style="padding-left: 2rem">
+              <button
+                type="button"
+                pButton
+                pRipple
+                class="p-button-text p-button-rounded p-button-plain mr-2"
+                [icon]="
+                  isCountryExpanded(country.country)
+                    ? 'pi pi-chevron-down'
+                    : 'pi pi-chevron-right'
+                "
+              ></button>
+              {{ country.country }}
+            </td>
+          </tr>
+          <ng-container *ngIf="isCountryExpanded(country.country)">
+            <ng-container *ngFor="let customer of country.customers">
+              <tr>
+                <td style="padding-left: 4rem">{{ customer.name }}</td>
+                <td>{{ country.country }}</td>
+                <td>{{ customer.company }}</td>
+                <td>{{ customer.status }}</td>
+                <td>{{ customer.date }}</td>
+              </tr>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </ng-container>
     </ng-template>
   </p-table>
 </div>
