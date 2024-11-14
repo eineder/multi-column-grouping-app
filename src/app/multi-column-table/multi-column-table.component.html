@@ -12,7 +12,7 @@
     <ng-template pTemplate="body" let-representative>
       <tr (click)="toggleRepresentative(representative.representative.name)">
         <td colspan="5">
-          <button
+          <butto
             type="button"
             pButton
             pRipple
@@ -22,15 +22,7 @@
                 ? 'pi pi-chevron-down'
                 : 'pi pi-chevron-right'
             "
-          ></button>
-          <img
-            [alt]="representative.representative.name"
-            src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{
-              representative.representative.image
-            }}"
-            width="32"
-            style="vertical-align: middle"
-          />
+          ></butto>
           <span class="font-bold ml-2">{{
             representative.representative.name
           }}</span>
