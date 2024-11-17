@@ -2,11 +2,17 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MultiColumnTableComponent } from './multi-column-table/multi-column-table.component';
 import { MasterDetailComponent } from './master-detail/master-detail.component';
+import { TreeViewComponent } from './tree-view/tree-view.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, MultiColumnTableComponent, MasterDetailComponent],
+  imports: [
+    CommonModule,
+    MultiColumnTableComponent,
+    MasterDetailComponent,
+    TreeViewComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })

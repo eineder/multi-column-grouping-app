@@ -9,17 +9,18 @@
         <th>Date</th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-row>
-      <ng-container
-        *ngTemplateOutlet="groupRowTemplate; context: { $implicit: row }"
-      >
+    <ng-template pTemplate="body">
+      <ng-container *ngFor="let row of groupedData">
+        <ng-container
+          *ngTemplateOutlet="groupRowTemplate; context: { $implicit: row }"
+        ></ng-container>
       </ng-container>
     </ng-template>
   </p-table>
 </div>
 
 <ng-template #groupRowTemplate let-row>
-  <tr *ngIf="row.children; else leaf">
+  <tr *ngIf="row.children">
     <td colspan="5">
       <button
         type="button"
@@ -31,8 +32,15 @@
         "
         (click)="toggleExpand(row.key)"
       ></button>
-      <span class="font-bold ml-2">{{ row.key }}</span>
+      <span class="font-bold ml-2">{{ row?.key }}</span>
     </td>
+  </tr>
+  <tr *ngIf="!row.children">
+    <td style="padding-left: 2rem">{{ row.name }}</td>
+    <td>{{ row.country }}</td>
+    <td>{{ row.company }}</td>
+    <td>{{ row.status }}</td>
+    <td>{{ row.date }}</td>
   </tr>
   <ng-container *ngIf="isExpanded(row.key)">
     <ng-container *ngFor="let child of row.children">
@@ -41,14 +49,4 @@
       ></ng-container>
     </ng-container>
   </ng-container>
-</ng-template>
-
-<ng-template #leaf let-row>
-  <tr>
-    <td style="padding-left: 2rem">{{ row.name }}</td>
-    <td>{{ row.country }}</td>
-    <td>{{ row.company }}</td>
-    <td>{{ row.status }}</td>
-    <td>{{ row.date }}</td>
-  </tr>
 </ng-template>

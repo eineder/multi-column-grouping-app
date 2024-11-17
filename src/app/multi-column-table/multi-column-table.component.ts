@@ -13,7 +13,7 @@ import { TableModule } from 'primeng/table';
 export class MultiColumnTableComponent implements OnInit {
   customers: any[] = []; // Original flat data
   groupedData: any[] = []; // Hierarchical grouped data
-  groupingFields: string[] = ['representative', 'country']; // Fields to group by
+  groupingFields: string[] = ['country', 'status']; // Fields to group by
 
   expandedState: { [key: string]: boolean } = {}; // Tracks expanded rows
 
