@@ -1,120 +1,85 @@
-import { Component, OnInit } from '@angular/core';
-import { CustomerService } from '../customerservice';
-import { TableModule } from 'primeng/table';
-import { HttpClientModule } from '@angular/common/http';
+import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { RippleModule } from 'primeng/ripple';
-import { TagModule } from 'primeng/tag';
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'app-multi-column-table',
-  templateUrl: 'multi-column-table.component.html',
+  templateUrl: './multi-column-table.component.html',
+  styleUrls: ['./multi-column-table.component.css'],
   standalone: true,
-  imports: [
-    TableModule,
-    HttpClientModule,
-    ButtonModule,
-    RippleModule,
-    TagModule,
-    NgFor,
-    NgIf,
-    NgClass,
-  ],
-  providers: [CustomerService],
-  styles: [
-    `
-      :host ::ng-deep .p-rowgroup-footer td {
-        font-weight: 700;
-      }
-
-      :host ::ng-deep .p-rowgroup-header {
-        span {
-          font-weight: 700;
-        }
-
-        .p-row-toggler {
-          margin-right: 0.5rem;
-        }
-      }
-    `,
-  ],
+  imports: [TableModule, NgIf, ButtonModule, NgFor, NgTemplateOutlet],
 })
 export class MultiColumnTableComponent implements OnInit {
-  customers: any[] = [];
-  expandedRepresentatives: { [key: string]: boolean } = {};
-  expandedCountries: { [key: string]: boolean } = {};
+  customers: any[] = []; // Original flat data
+  groupedData: any[] = []; // Hierarchical grouped data
+  groupingFields: string[] = ['representative', 'country']; // Fields to group by
 
-  constructor(private customerService: CustomerService) {}
+  expandedState: { [key: string]: boolean } = {}; // Tracks expanded rows
 
-  ngOnInit(): void {
+  ngOnInit() {
+    // Replace this with your data fetching logic
     this.customers = [
       {
-        representative: { name: 'John', image: 'john.png' },
-        countries: [
-          {
-            country: 'USA',
-            customers: [
-              {
-                name: 'Customer 1',
-                company: 'Company A',
-                status: 'Active',
-                date: '2021-01-01',
-              },
-              {
-                name: 'Customer 2',
-                company: 'Company B',
-                status: 'Inactive',
-                date: '2021-02-01',
-              },
-            ],
-          },
-          {
-            country: 'Canada',
-            customers: [
-              {
-                name: 'Customer 3',
-                company: 'Company C',
-                status: 'Active',
-                date: '2021-03-01',
-              },
-            ],
-          },
-        ],
+        name: 'John',
+        country: 'USA',
+        company: 'Apple',
+        status: 'Active',
+        date: '2023-10-10',
+        representative: 'Alice',
       },
       {
-        representative: { name: 'Jane', image: 'jane.png' },
-        countries: [
-          {
-            country: 'UK',
-            customers: [
-              {
-                name: 'Customer 4',
-                company: 'Company D',
-                status: 'Active',
-                date: '2021-04-01',
-              },
-            ],
-          },
-        ],
+        name: 'Jane',
+        country: 'USA',
+        company: 'Microsoft',
+        status: 'Inactive',
+        date: '2023-10-12',
+        representative: 'Alice',
       },
-      // More representatives...
+      {
+        name: 'Tom',
+        country: 'Canada',
+        company: 'Amazon',
+        status: 'Active',
+        date: '2023-11-01',
+        representative: 'Bob',
+      },
+      // Add more data...
     ];
-  }
-  toggleRepresentative(representativeName: string) {
-    this.expandedRepresentatives[representativeName] =
-      !this.expandedRepresentatives[representativeName];
+
+    this.groupedData = this.groupData(this.customers, this.groupingFields);
   }
 
-  toggleCountry(countryName: string) {
-    this.expandedCountries[countryName] = !this.expandedCountries[countryName];
+  /**
+   * Groups the data recursively based on the provided fields.
+   */
+  groupData(data: any[], fields: string[], level = 0): any[] {
+    if (level >= fields.length) return data;
+
+    const grouped = data.reduce((acc, item) => {
+      const groupKey = item[fields[level]];
+      if (!acc[groupKey]) acc[groupKey] = [];
+      acc[groupKey].push(item);
+      return acc;
+    }, {});
+
+    return Object.keys(grouped).map((key) => ({
+      key,
+      children: this.groupData(grouped[key], fields, level + 1),
+    }));
   }
 
-  isRepresentativeExpanded(representativeName: string): boolean {
-    return this.expandedRepresentatives[representativeName] || false;
+  /**
+   * Toggles the expanded state for a given key.
+   */
+  toggleExpand(key: string) {
+    this.expandedState[key] = !this.expandedState[key];
   }
 
-  isCountryExpanded(countryName: string): boolean {
-    return this.expandedCountries[countryName] || false;
+  /**
+   * Checks if a group is expanded.
+   */
+  isExpanded(key: string): boolean {
+    return this.expandedState[key] || false;
   }
 }

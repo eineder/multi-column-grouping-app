@@ -1,66 +1,54 @@
 <div class="card">
-  <p-table [value]="customers" [tableStyle]="{ 'min-width': '70rem' }">
+  <p-table [value]="groupedData" [tableStyle]="{ 'min-width': '70rem' }">
     <ng-template pTemplate="header">
       <tr>
-        <th style="width: 20%">Name</th>
-        <th style="width: 20%">Country</th>
-        <th style="width: 20%">Company</th>
-        <th style="width: 20%">Status</th>
-        <th style="width: 20%">Date</th>
+        <th>Name</th>
+        <th>Country</th>
+        <th>Company</th>
+        <th>Status</th>
+        <th>Date</th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-representative>
-      <tr (click)="toggleRepresentative(representative.representative.name)">
-        <td colspan="5">
-          <butto
-            type="button"
-            pButton
-            pRipple
-            class="p-button-text p-button-rounded p-button-plain mr-2"
-            [icon]="
-              isRepresentativeExpanded(representative.representative.name)
-                ? 'pi pi-chevron-down'
-                : 'pi pi-chevron-right'
-            "
-          ></butto>
-          <span class="font-bold ml-2">{{
-            representative.representative.name
-          }}</span>
-        </td>
-      </tr>
+    <ng-template pTemplate="body" let-row>
       <ng-container
-        *ngIf="isRepresentativeExpanded(representative.representative.name)"
+        *ngTemplateOutlet="groupRowTemplate; context: { $implicit: row }"
       >
-        <ng-container *ngFor="let country of representative.countries">
-          <tr (click)="toggleCountry(country.country)">
-            <td colspan="5" style="padding-left: 2rem">
-              <button
-                type="button"
-                pButton
-                pRipple
-                class="p-button-text p-button-rounded p-button-plain mr-2"
-                [icon]="
-                  isCountryExpanded(country.country)
-                    ? 'pi pi-chevron-down'
-                    : 'pi pi-chevron-right'
-                "
-              ></button>
-              {{ country.country }}
-            </td>
-          </tr>
-          <ng-container *ngIf="isCountryExpanded(country.country)">
-            <ng-container *ngFor="let customer of country.customers">
-              <tr>
-                <td style="padding-left: 4rem">{{ customer.name }}</td>
-                <td>{{ country.country }}</td>
-                <td>{{ customer.company }}</td>
-                <td>{{ customer.status }}</td>
-                <td>{{ customer.date }}</td>
-              </tr>
-            </ng-container>
-          </ng-container>
-        </ng-container>
       </ng-container>
     </ng-template>
   </p-table>
 </div>
+
+<ng-template #groupRowTemplate let-row>
+  <tr *ngIf="row.children; else leaf">
+    <td colspan="5">
+      <button
+        type="button"
+        pButton
+        pRipple
+        class="p-button-text p-button-rounded p-button-plain mr-2"
+        [icon]="
+          isExpanded(row.key) ? 'pi pi-chevron-down' : 'pi pi-chevron-right'
+        "
+        (click)="toggleExpand(row.key)"
+      ></button>
+      <span class="font-bold ml-2">{{ row.key }}</span>
+    </td>
+  </tr>
+  <ng-container *ngIf="isExpanded(row.key)">
+    <ng-container *ngFor="let child of row.children">
+      <ng-container
+        *ngTemplateOutlet="groupRowTemplate; context: { $implicit: child }"
+      ></ng-container>
+    </ng-container>
+  </ng-container>
+</ng-template>
+
+<ng-template #leaf let-row>
+  <tr>
+    <td style="padding-left: 2rem">{{ row.name }}</td>
+    <td>{{ row.country }}</td>
+    <td>{{ row.company }}</td>
+    <td>{{ row.status }}</td>
+    <td>{{ row.date }}</td>
+  </tr>
+</ng-template>
