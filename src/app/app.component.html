@@ -1,2 +1,21 @@
 <!-- <app-tree-view></app-tree-view> -->
-<app-multi-column-table></app-multi-column-table>
+<app-multi-column-table [value]="customers" [groupingFields]="groupingFields">
+  <ng-template #headerTemplate>
+    <tr>
+      <th>Name</th>
+      <th>Country</th>
+      <th>Company</th>
+      <th>Status</th>
+      <th>Date</th>
+    </tr>
+  </ng-template>
+  <ng-template #bodyTemplate let-row>
+    <tr>
+      <td style="padding-left: 2rem">{{ row.name }}</td>
+      <td>{{ row.country }}</td>
+      <td>{{ row.company }}</td>
+      <td>{{ row.status }}</td>
+      <td>{{ row.date }}</td>
+    </tr>
+  </ng-template>
+</app-multi-column-table>

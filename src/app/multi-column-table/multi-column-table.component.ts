@@ -1,5 +1,16 @@
-import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { JsonPipe, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import {
+  Component,
+  OnInit,
+  Input,
+  ContentChild,
+  TemplateRef,
+  ViewChild,
+  ElementRef,
+  Renderer2,
+  AfterContentInit,
+  ViewContainerRef,
+} from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 
@@ -11,48 +22,20 @@ import { TableModule } from 'primeng/table';
   imports: [TableModule, NgIf, ButtonModule, NgFor, NgTemplateOutlet],
 })
 export class MultiColumnTableComponent implements OnInit {
-  customers: any[] = []; // Original flat data
-  groupedData: any[] = []; // Hierarchical grouped data
-  groupingFields: string[] = ['country', 'status']; // Fields to group by
+  @Input() value: any[] = [];
+  @Input() groupingFields: string[] = [];
+  @ContentChild('headerTemplate') headerTemplate!: TemplateRef<any>;
+  @ContentChild('bodyTemplate') bodyTemplate!: TemplateRef<any>;
+  @ViewChild('bodyTemplate', { static: true })
+  bodyTemplateViewChild!: ElementRef;
 
-  expandedState: { [key: string]: boolean } = {}; // Tracks expanded rows
+  groupedData: any[] = [];
+  expandedState: { [key: string]: boolean } = {};
 
   ngOnInit() {
-    // Replace this with your data fetching logic
-    this.customers = [
-      {
-        name: 'John',
-        country: 'USA',
-        company: 'Apple',
-        status: 'Active',
-        date: '2023-10-10',
-        representative: 'Alice',
-      },
-      {
-        name: 'Jane',
-        country: 'USA',
-        company: 'Microsoft',
-        status: 'Inactive',
-        date: '2023-10-12',
-        representative: 'Alice',
-      },
-      {
-        name: 'Tom',
-        country: 'Canada',
-        company: 'Amazon',
-        status: 'Active',
-        date: '2023-11-01',
-        representative: 'Bob',
-      },
-      // Add more data...
-    ];
-
-    this.groupedData = this.groupData(this.customers, this.groupingFields);
+    this.groupedData = this.groupData(this.value, this.groupingFields);
   }
 
-  /**
-   * Groups the data recursively based on the provided fields.
-   */
   groupData(data: any[], fields: string[], level = 0): any[] {
     if (level >= fields.length) return data;
 
@@ -69,16 +52,10 @@ export class MultiColumnTableComponent implements OnInit {
     }));
   }
 
-  /**
-   * Toggles the expanded state for a given key.
-   */
   toggleExpand(key: string) {
     this.expandedState[key] = !this.expandedState[key];
   }
 
-  /**
-   * Checks if a group is expanded.
-   */
   isExpanded(key: string): boolean {
     return this.expandedState[key] || false;
   }
