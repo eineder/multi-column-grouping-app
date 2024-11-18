@@ -21,6 +21,7 @@ export class MultiColumnTableComponent implements OnInit {
   @Input() groupingFields: string[] = [];
   @Input({ required: true }) columns: TableColumn[] = [];
 
+  private nodeId: number = 0;
   groupedData: any[] = [];
   expandedState: { [key: string]: boolean } = {};
   getGroupRowStyle(level: number): any {
@@ -54,19 +55,20 @@ export class MultiColumnTableComponent implements OnInit {
       return acc;
     }, {});
 
-    return Object.keys(grouped).map((key) => ({
-      key,
+    return Object.keys(grouped).map((key, index) => ({
+      value: key,
       field: fields[level],
+      id: this.nodeId++,
       level,
       children: this.groupData(grouped[key], fields, level + 1),
     }));
   }
 
-  toggleExpand(key: string) {
-    this.expandedState[key] = !this.expandedState[key];
+  toggleExpand(id: string) {
+    this.expandedState[id] = !this.expandedState[id];
   }
 
-  isExpanded(key: string): boolean {
-    return this.expandedState[key] || false;
+  isExpanded(id: string): boolean {
+    return this.expandedState[id] || false;
   }
 }

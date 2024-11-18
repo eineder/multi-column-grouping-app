@@ -29,12 +29,12 @@
         pRipple
         class="p-button-text p-button-rounded p-button-plain mr-2"
         [icon]="
-          isExpanded(row.key) ? 'pi pi-chevron-down' : 'pi pi-chevron-right'
+          isExpanded(row.id) ? 'pi pi-chevron-down' : 'pi pi-chevron-right'
         "
-        (click)="toggleExpand(row.key)"
+        (click)="toggleExpand(row.id)"
       ></button>
-      <span class="font-bold ml-2"
-        >{{ getColumnHeader(row.field) }}: {{ row?.key }}</span
+      <span class="font-bold ml-2"></span>
+        {{ row.id }} - {{ getColumnHeader(row.field) }}: {{ row?.value }}</span
       >
     </td>
   </tr>
@@ -57,7 +57,7 @@
     </tr>
   </ng-container>
 
-  <ng-container *ngIf="isExpanded(row.key)">
+  <ng-container *ngIf="isExpanded(row.id)">
     <ng-container *ngFor="let child of row.children">
       <ng-container
         *ngTemplateOutlet="groupRowTemplate; context: { $implicit: child }"
