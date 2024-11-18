@@ -1,27 +1,14 @@
 <!-- <app-tree-view></app-tree-view> -->
+
+<span style="width: 300px">
+  <input type="text" style="width: 400px" [(ngModel)]="groupingInput" />
+  <button (click)="onApplyGroupingClick($event)">Apply grouping</button>
+</span>
 <app-multi-column-table
   [value]="customers"
   [columns]="columns"
   [groupingFields]="groupingFields"
 >
-  <!-- <ng-template #headerTemplate>
-    <tr>
-      <th>Name</th>
-      <th>Country</th>
-      <th>Company</th>
-      <th>Status</th>
-      <th>Date</th>
-    </tr>
-  </ng-template> -->
-  <!-- <ng-template #bodyTemplate let-row>
-    <tr>
-      <td style="padding-left: 2rem">{{ row.name }}</td>
-      <td>{{ row.country }}</td>
-      <td>{{ row.company }}</td>
-      <td>{{ row.status }}</td>
-      <td>{{ row.date }}</td>
-    </tr>
-  </ng-template> -->
   <ng-template #nameHeaderTemplate>
     <td style="color: chocolate">The NAME!</td>
   </ng-template>

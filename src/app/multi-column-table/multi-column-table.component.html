@@ -1,7 +1,7 @@
 <div class="card">
   <p-table [value]="groupedData" [tableStyle]="{ 'min-width': '70rem' }">
     <ng-template pTemplate="header">
-      <ng-container *ngFor="let column of getUngroupedColumns()">
+      <ng-container *ngFor="let column of ungroupedColumns">
         <td>
           <ng-container *ngIf="isTemplate(column.header); else defaultHeader">
             <ng-container
@@ -41,7 +41,7 @@
 
   <ng-container *ngIf="!row.children">
     <tr>
-      <ng-container *ngFor="let column of getUngroupedColumns()">
+      <ng-container *ngFor="let column of ungroupedColumns">
         <ng-container *ngIf="column.bodyTemplate; else defaultBody">
           <ng-container
             *ngTemplateOutlet="

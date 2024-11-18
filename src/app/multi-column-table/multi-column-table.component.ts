@@ -1,5 +1,12 @@
 import { NgFor, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
-import { Component, OnInit, Input, TemplateRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  TemplateRef,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 
@@ -16,7 +23,7 @@ export interface TableColumn {
   standalone: true,
   imports: [TableModule, NgIf, ButtonModule, NgFor, NgTemplateOutlet, NgStyle],
 })
-export class MultiColumnTableComponent implements OnInit {
+export class MultiColumnTableComponent implements OnChanges, OnInit {
   @Input({ required: true }) value: any[] = [];
   @Input() groupingFields: string[] = [];
   @Input({ required: true }) columns: TableColumn[] = [];
@@ -24,22 +31,31 @@ export class MultiColumnTableComponent implements OnInit {
   private nodeId: number = 0;
   groupedData: any[] = [];
   expandedState: { [key: string]: boolean } = {};
+  public get ungroupedColumns() {
+    const groupingFieldsSet = new Set(this.groupingFields);
+    return this.columns.filter((c) => !groupingFieldsSet.has(c.field));
+  }
   getGroupRowStyle(level: number): any {
     const padding = level * 2;
     return { 'padding-left': `${padding}rem` };
   }
 
   ngOnInit() {
+    this.initializeGrouping();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['groupingFields']) {
+      this.initializeGrouping();
+    }
+  }
+
+  initializeGrouping() {
     this.groupedData = this.groupData(this.value, this.groupingFields);
   }
 
   isTemplate(header: string | TemplateRef<any>) {
     return typeof header !== 'string';
-  }
-
-  getUngroupedColumns(): TableColumn[] {
-    const groupingFieldsSet = new Set(this.groupingFields);
-    return this.columns.filter((c) => !groupingFieldsSet.has(c.field));
   }
 
   getTemplate(header: any): TemplateRef<any> {

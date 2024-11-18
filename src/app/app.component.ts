@@ -5,11 +5,17 @@ import {
   TableColumn,
 } from './multi-column-table/multi-column-table.component';
 import { MasterDetailComponent } from './master-detail/master-detail.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, MultiColumnTableComponent, MasterDetailComponent],
+  imports: [
+    CommonModule,
+    MultiColumnTableComponent,
+    MasterDetailComponent,
+    FormsModule,
+  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
@@ -23,6 +29,7 @@ export class AppComponent implements OnInit {
   title = 'multi-column-grouping-app';
   customers: any[] = [];
   groupingFields: string[] = ['country', 'status'];
+  groupingInput: string = '';
   columns: TableColumn[] = [];
 
   ngOnInit() {
@@ -32,8 +39,8 @@ export class AppComponent implements OnInit {
         header: this.nameHeaderTemplate,
         bodyTemplate: this.nameBodyTemplate,
       },
-      { field: 'country', header: 'Company' },
-      { field: 'company', header: 'Country' },
+      { field: 'country', header: 'Country' },
+      { field: 'company', header: 'Company' },
       { field: 'status', header: 'Status' },
       { field: 'date', header: 'Date' },
     ];
@@ -65,5 +72,10 @@ export class AppComponent implements OnInit {
       },
       // Add more data...
     ];
+  }
+
+  onApplyGroupingClick(event: any) {
+    this.groupingFields = this.groupingInput.split(',');
+    console.log('Apply grouping: ', this.groupingFields);
   }
 }
