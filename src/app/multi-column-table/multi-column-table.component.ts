@@ -12,7 +12,8 @@ import { TableModule } from 'primeng/table';
 
 export interface TableColumn {
   field: string;
-  header: string | TemplateRef<any>;
+  name: string;
+  headerTemplate?: TemplateRef<any>;
   bodyTemplate?: TemplateRef<any>;
 }
 
@@ -54,16 +55,8 @@ export class MultiColumnTableComponent implements OnChanges, OnInit {
     this.groupedData = this.groupData(this.value, this.groupingFields);
   }
 
-  isTemplate(header: string | TemplateRef<any>) {
-    return typeof header !== 'string';
-  }
-
-  getTemplate(header: any): TemplateRef<any> {
-    return header as TemplateRef<any>;
-  }
-
   getColumnHeader(field: string): string {
-    return this.columns.find((c) => c.field === field)?.header as string;
+    return this.columns.find((c) => c.field === field)?.name as string;
   }
 
   groupData(data: any[], fields: string[], level = 0): any[] {

@@ -33,14 +33,13 @@ export class AppComponent implements OnInit {
   title = 'multi-column-grouping-app';
   customers: any[] = [];
   groupingFields: string[] = ['country', 'status'];
-  groupingInput: string = '';
   columns: TableColumn[] = [];
-  groupingColumns: TableColumn[] = [];
+  groupingColumns: { field: string; name: string }[] = [];
   public get availableColumns() {
     return this.columns.map((c) => {
       return {
         field: c.field,
-        header: c.header,
+        header: c.name,
       };
     });
   }
@@ -49,13 +48,14 @@ export class AppComponent implements OnInit {
     this.columns = [
       {
         field: 'name',
-        header: this.nameHeaderTemplate,
+        name: 'Name',
+        headerTemplate: this.nameHeaderTemplate,
         bodyTemplate: this.nameBodyTemplate,
       },
-      { field: 'country', header: 'Country' },
-      { field: 'company', header: 'Company' },
-      { field: 'status', header: 'Status' },
-      { field: 'date', header: 'Date' },
+      { field: 'country', name: 'Country' },
+      { field: 'company', name: 'Company' },
+      { field: 'status', name: 'Status' },
+      { field: 'date', name: 'Date' },
     ];
 
     this.customers = [

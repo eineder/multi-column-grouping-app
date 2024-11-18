@@ -3,12 +3,12 @@
     <ng-template pTemplate="header">
       <ng-container *ngFor="let column of ungroupedColumns">
         <td>
-          <ng-container *ngIf="isTemplate(column.header); else defaultHeader">
+          <ng-container *ngIf="column.headerTemplate; else defaultHeader">
             <ng-container
-              *ngTemplateOutlet="getTemplate(column.header)"
+              *ngTemplateOutlet="column.headerTemplate"
             ></ng-container>
           </ng-container>
-          <ng-template #defaultHeader>{{ column.header }}</ng-template>
+          <ng-template #defaultHeader>{{ column.name }}</ng-template>
         </td>
       </ng-container>
     </ng-template>

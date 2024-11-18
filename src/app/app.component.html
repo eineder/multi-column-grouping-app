@@ -1,5 +1,3 @@
-<!-- <app-tree-view></app-tree-view> -->
-
 <span style="width: 300px">
   <label for="groupBySelect">Group by columns: </label>
   <p-multiSelect
@@ -7,11 +5,10 @@
     [options]="columns"
     [(ngModel)]="groupingColumns"
     placeholder="Select columns"
-    optionLabel="field"
+    optionLabel="name"
     display="chip"
     [showClear]="true"
   />
-  <!-- <input type="text" style="width: 400px" [(ngModel)]="groupingInput" /> -->
   <p-button
     [style]="{ 'margin-left': '24px' }"
     (click)="onApplyGroupingClick($event)"
