@@ -1,4 +1,11 @@
-import { NgFor, NgIf, NgStyle, NgTemplateOutlet } from '@angular/common';
+import { CheckboxModule } from 'primeng/checkbox';
+import {
+  CommonModule,
+  NgFor,
+  NgIf,
+  NgStyle,
+  NgTemplateOutlet,
+} from '@angular/common';
 import {
   Component,
   OnInit,
@@ -8,11 +15,11 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { TableModule } from 'primeng/table';
+import { FormsModule } from '@angular/forms';
+import { TableCheckbox, TableModule } from 'primeng/table';
 
-export interface TableColumn {
-  field: string;
-  name: string;
+export class TableColumn {
+  constructor(public field: string, public name: string) {}
   headerTemplate?: TemplateRef<any>;
   bodyTemplate?: TemplateRef<any>;
 }
@@ -22,7 +29,17 @@ export interface TableColumn {
   templateUrl: './multi-column-table.component.html',
   styleUrls: ['./multi-column-table.component.css'],
   standalone: true,
-  imports: [TableModule, NgIf, ButtonModule, NgFor, NgTemplateOutlet, NgStyle],
+  imports: [
+    CommonModule,
+    TableModule,
+    NgIf,
+    ButtonModule,
+    NgFor,
+    NgTemplateOutlet,
+    NgStyle,
+    CheckboxModule,
+    FormsModule,
+  ],
 })
 export class MultiColumnTableComponent implements OnChanges, OnInit {
   @Input({ required: true }) value: any[] = [];

@@ -1,16 +1,18 @@
 <div class="card">
   <p-table [value]="groupedData" [tableStyle]="{ 'min-width': '70rem' }">
     <ng-template pTemplate="header">
-      <ng-container *ngFor="let column of ungroupedColumns">
-        <td>
-          <ng-container *ngIf="column.headerTemplate; else defaultHeader">
-            <ng-container
-              *ngTemplateOutlet="column.headerTemplate"
-            ></ng-container>
-          </ng-container>
-          <ng-template #defaultHeader>{{ column.name }}</ng-template>
-        </td>
-      </ng-container>
+      <tr [attr.colspan]="ungroupedColumns.length">
+        <ng-container *ngFor="let column of ungroupedColumns">
+          <th>
+            <ng-container *ngIf="column.headerTemplate; else defaultHeader">
+              <ng-container
+                *ngTemplateOutlet="column.headerTemplate"
+              ></ng-container>
+            </ng-container>
+            <ng-template #defaultHeader>{{ column.name }}</ng-template>
+          </th>
+        </ng-container>
+      </tr>
     </ng-template>
     <ng-template pTemplate="body" let-row>
       <ng-container
