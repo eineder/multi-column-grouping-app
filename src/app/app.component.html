@@ -1,8 +1,23 @@
 <!-- <app-tree-view></app-tree-view> -->
 
 <span style="width: 300px">
-  <input type="text" style="width: 400px" [(ngModel)]="groupingInput" />
-  <button (click)="onApplyGroupingClick($event)">Apply grouping</button>
+  <label for="groupBySelect">Group by columns: </label>
+  <p-multiSelect
+    id="groupBySelect"
+    [options]="columns"
+    [(ngModel)]="groupingColumns"
+    placeholder="Select columns"
+    optionLabel="field"
+    display="chip"
+    [showClear]="true"
+  />
+  <!-- <input type="text" style="width: 400px" [(ngModel)]="groupingInput" /> -->
+  <p-button
+    [style]="{ 'margin-left': '24px' }"
+    (click)="onApplyGroupingClick($event)"
+  >
+    Apply grouping
+  </p-button>
 </span>
 <app-multi-column-table
   [value]="customers"

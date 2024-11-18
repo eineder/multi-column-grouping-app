@@ -4,8 +4,11 @@ import {
   MultiColumnTableComponent,
   TableColumn,
 } from './multi-column-table/multi-column-table.component';
-import { MasterDetailComponent } from './master-detail/master-detail.component';
+// import { MasterDetailComponent } from './master-detail/master-detail.component';
 import { FormsModule } from '@angular/forms';
+import { MultiSelect, MultiSelectModule } from 'primeng/multiselect';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-root',
@@ -13,8 +16,9 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     MultiColumnTableComponent,
-    MasterDetailComponent,
     FormsModule,
+    MultiSelectModule,
+    ButtonModule,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
@@ -31,6 +35,15 @@ export class AppComponent implements OnInit {
   groupingFields: string[] = ['country', 'status'];
   groupingInput: string = '';
   columns: TableColumn[] = [];
+  groupingColumns: TableColumn[] = [];
+  public get availableColumns() {
+    return this.columns.map((c) => {
+      return {
+        field: c.field,
+        header: c.header,
+      };
+    });
+  }
 
   ngOnInit() {
     this.columns = [
@@ -75,7 +88,7 @@ export class AppComponent implements OnInit {
   }
 
   onApplyGroupingClick(event: any) {
-    this.groupingFields = this.groupingInput.split(',');
+    this.groupingFields = this.groupingColumns.map((c) => c.field);
     console.log('Apply grouping: ', this.groupingFields);
   }
 }
