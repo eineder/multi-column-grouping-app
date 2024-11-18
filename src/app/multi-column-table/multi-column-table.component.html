@@ -22,7 +22,10 @@
 
 <ng-template #groupRowTemplate let-row>
   <tr *ngIf="row.children">
-    <td colspan="5" [ngStyle]="getGroupRowStyle(row.level)">
+    <td
+      [attr.colspan]="ungroupedColumns.length"
+      [ngStyle]="getGroupRowStyle(row.level)"
+    >
       <button
         type="button"
         pButton

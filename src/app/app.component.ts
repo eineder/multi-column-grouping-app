@@ -52,6 +52,7 @@ export class AppComponent implements OnInit {
         headerTemplate: this.nameHeaderTemplate,
         bodyTemplate: this.nameBodyTemplate,
       },
+      { field: 'representative', name: 'Representative' },
       { field: 'country', name: 'Country' },
       { field: 'company', name: 'Company' },
       { field: 'status', name: 'Status' },
