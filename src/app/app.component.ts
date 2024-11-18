@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MultiColumnTableComponent } from './multi-column-table/multi-column-table.component';
+import {
+  MultiColumnTableComponent,
+  TableColumn,
+} from './multi-column-table/multi-column-table.component';
 import { MasterDetailComponent } from './master-detail/master-detail.component';
 
 @Component({
@@ -11,11 +14,30 @@ import { MasterDetailComponent } from './master-detail/master-detail.component';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
+  @ViewChild('nameBodyTemplate', { static: true })
+  nameBodyTemplate!: TemplateRef<any>;
+
+  @ViewChild('nameHeaderTemplate', { static: true })
+  nameHeaderTemplate!: TemplateRef<any>;
+
   title = 'multi-column-grouping-app';
   customers: any[] = [];
   groupingFields: string[] = ['country', 'status'];
+  columns: TableColumn[] = [];
 
   ngOnInit() {
+    this.columns = [
+      {
+        field: 'name',
+        header: this.nameHeaderTemplate,
+        bodyTemplate: this.nameBodyTemplate,
+      },
+      { field: 'country', header: 'Company' },
+      { field: 'company', header: 'Country' },
+      { field: 'status', header: 'Status' },
+      { field: 'date', header: 'Date' },
+    ];
+
     this.customers = [
       {
         name: 'John',

@@ -1,6 +1,10 @@
 <!-- <app-tree-view></app-tree-view> -->
-<app-multi-column-table [value]="customers" [groupingFields]="groupingFields">
-  <ng-template #headerTemplate>
+<app-multi-column-table
+  [value]="customers"
+  [columns]="columns"
+  [groupingFields]="groupingFields"
+>
+  <!-- <ng-template #headerTemplate>
     <tr>
       <th>Name</th>
       <th>Country</th>
@@ -8,8 +12,8 @@
       <th>Status</th>
       <th>Date</th>
     </tr>
-  </ng-template>
-  <ng-template #bodyTemplate let-row>
+  </ng-template> -->
+  <!-- <ng-template #bodyTemplate let-row>
     <tr>
       <td style="padding-left: 2rem">{{ row.name }}</td>
       <td>{{ row.country }}</td>
@@ -17,5 +21,11 @@
       <td>{{ row.status }}</td>
       <td>{{ row.date }}</td>
     </tr>
+  </ng-template> -->
+  <ng-template #nameHeaderTemplate>
+    <td style="color: chocolate">The NAME!</td>
+  </ng-template>
+  <ng-template #nameBodyTemplate let-row>
+    <td style="padding-left: 2rem">{{ row.name }}</td>
   </ng-template>
 </app-multi-column-table>
