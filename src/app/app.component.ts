@@ -1,25 +1,8 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import {
-  MultiColumnTableComponent,
-  TableColumn,
-} from './multi-column-table/multi-column-table.component';
-// import { MasterDetailComponent } from './master-detail/master-detail.component';
-import { FormsModule } from '@angular/forms';
-import { MultiSelect, MultiSelectModule } from 'primeng/multiselect';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ButtonModule } from 'primeng/button';
+import { TableColumn } from './multi-column-table/multi-column-table.component';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MultiColumnTableComponent,
-    FormsModule,
-    MultiSelectModule,
-    ButtonModule,
-  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })

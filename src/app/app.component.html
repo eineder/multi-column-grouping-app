@@ -1,30 +1,34 @@
-<span style="width: 300px">
-  <label for="groupBySelect">Group by columns: </label>
-  <p-multiSelect
-    id="groupBySelect"
-    [options]="columns"
-    [(ngModel)]="groupingColumns"
-    placeholder="Select columns"
-    optionLabel="name"
-    display="chip"
-    [showClear]="true"
-  />
-  <p-button
-    [style]="{ 'margin-left': '24px' }"
-    (click)="onApplyGroupingClick($event)"
+<div style="margin: 16px">
+  <div style="margin-top: 16px; margin-bottom: 16px">
+    <span style="width: 300px">
+      <label for="groupBySelect">Group by columns: </label>
+      <p-multiSelect
+        id="groupBySelect"
+        [options]="columns"
+        [(ngModel)]="groupingColumns"
+        placeholder="Select columns"
+        optionLabel="name"
+        display="chip"
+        [showClear]="true"
+      />
+      <p-button
+        [style]="{ 'margin-left': '24px' }"
+        (click)="onApplyGroupingClick($event)"
+      >
+        Apply grouping
+      </p-button>
+    </span>
+  </div>
+  <app-multi-column-table
+    [value]="customers"
+    [columns]="columns"
+    [groupingFields]="groupingFields"
   >
-    Apply grouping
-  </p-button>
-</span>
-<app-multi-column-table
-  [value]="customers"
-  [columns]="columns"
-  [groupingFields]="groupingFields"
->
-  <ng-template #nameHeaderTemplate>
-    <td style="color: chocolate">The NAME!</td>
-  </ng-template>
-  <ng-template #nameBodyTemplate let-row>
-    <td style="padding-left: 2rem">{{ row.name }}</td>
-  </ng-template>
-</app-multi-column-table>
+    <ng-template #nameHeaderTemplate>
+      <td style="color: chocolate">The NAME!</td>
+    </ng-template>
+    <ng-template #nameBodyTemplate let-row>
+      <td style="padding-left: 2rem">{{ row.name }}</td>
+    </ng-template>
+  </app-multi-column-table>
+</div>
