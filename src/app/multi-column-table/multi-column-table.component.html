@@ -1,7 +1,7 @@
 <div class="card">
   <p-table [value]="groupedData" [tableStyle]="{ 'min-width': '70rem' }">
     <ng-template pTemplate="header">
-      <ng-container *ngFor="let column of columns">
+      <ng-container *ngFor="let column of getUngroupedColumns()">
         <td>
           <ng-container *ngIf="isTemplate(column.header); else defaultHeader">
             <ng-container
@@ -33,15 +33,15 @@
         "
         (click)="toggleExpand(row.id)"
       ></button>
-      <span class="font-bold ml-2"></span>
-        {{ row.id }} - {{ getColumnHeader(row.field) }}: {{ row?.value }}</span
+      <span class="font-bold ml-2">
+        {{ getColumnHeader(row.field) }}: {{ row?.value }}</span
       >
     </td>
   </tr>
 
   <ng-container *ngIf="!row.children">
     <tr>
-      <ng-container *ngFor="let column of columns">
+      <ng-container *ngFor="let column of getUngroupedColumns()">
         <ng-container *ngIf="column.bodyTemplate; else defaultBody">
           <ng-container
             *ngTemplateOutlet="

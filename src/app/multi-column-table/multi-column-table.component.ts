@@ -37,6 +37,11 @@ export class MultiColumnTableComponent implements OnInit {
     return typeof header !== 'string';
   }
 
+  getUngroupedColumns(): TableColumn[] {
+    const groupingFieldsSet = new Set(this.groupingFields);
+    return this.columns.filter((c) => !groupingFieldsSet.has(c.field));
+  }
+
   getTemplate(header: any): TemplateRef<any> {
     return header as TemplateRef<any>;
   }
